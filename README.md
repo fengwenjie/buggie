@@ -1,4 +1,4 @@
 buggie
 ======
 
-my personal bug tracker webapp
+my personal bug tracker webapp , using nodejs
