@@ -1,0 +1,1 @@
+// The manager to get / create / modify / delete bugs
