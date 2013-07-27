@@ -2,17 +2,11 @@ var connectRoute = require('connect-route');
     connect = require('connect'),
     app = connect();
 
-var mysql      = require('mysql'),
-    connection = mysql.createConnection({
-                  host     : '127.0.0.1',
-                  port     : '3307',
-                  user     : 'root',
-                  password : 'admin888',
-                  database : 'buggie'
-                });
+var bugManager = require('./service/BugManager.js');
 
 app.use(connect.static(__dirname))
    .use(connectRoute(function (router) {
+    
     router.get('/', function (req, res, next) {
         res.statusCode = 302;
         res.setHeader('Location', 'index.html');
@@ -25,18 +19,16 @@ app.use(connect.static(__dirname))
 
     router.get('/bug/list', function (req, res, next) {
 
-        connection.connect();
-
-        connection.query('SELECT * from bugs', function(err, rows, fields) {
-            if (err) {
-                console.log(err);                
-                res.end('db errors');
+        bugManager.getBugList(
+            // suc callback
+            function(rows){
+                res.end( JSON.stringify( {retcode:1,ret:rows} ) );
+            },
+            // err callback
+            function(err){
+                res.end( JSON.stringify( {retcode:-1,ret:'db errors'} ) );
             }
-            else {                
-                res.end(JSON.stringify(rows));
-            }
-            connection.end();         
-        });
+        );
         
     });
 
