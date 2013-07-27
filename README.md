@@ -13,3 +13,7 @@ structure of code
   --\lib		==> folder of 3rd library used for web frontend
   --\img 		==> folder of image resources used for web frontend
 --\service		==> folder of backend services
+--\install      ==> folder of containing install files
+
+
+
