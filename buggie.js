@@ -1,7 +1,15 @@
-var
-    connectRoute = require('connect-route');
+var connectRoute = require('connect-route');
     connect = require('connect'),
     app = connect();
+
+var mysql      = require('mysql'),
+    connection = mysql.createConnection({
+                  host     : '127.0.0.1',
+                  port     : '3307',
+                  user     : 'root',
+                  password : 'admin888',
+                  database : 'buggie'
+                });
 
 app.use(connect.static(__dirname))
    .use(connectRoute(function (router) {
@@ -16,7 +24,20 @@ app.use(connect.static(__dirname))
     });
 
     router.get('/bug/list', function (req, res, next) {
-        res.end('to return list of bugs in json');
+
+        connection.connect();
+
+        connection.query('SELECT * from bugs', function(err, rows, fields) {
+            if (err) {
+                console.log(err);                
+                res.end('db errors');
+            }
+            else {                
+                res.end(JSON.stringify(rows));
+            }
+            connection.end();         
+        });
+        
     });
 
     router.get('/bug/new', function (req, res, next) {
