@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>It's Buggie Here</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>It's My Buggie Here</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="author" content="">
 		<meta name="keywords" content="">
 		<meta name="description" content="">
@@ -16,13 +17,20 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 		<link rel="SHORTCUT ICON" href="web/img/favicon.ico" />
+		<!-- Bootstrap core CSS -->
+		<link href="web/lib/bootstrap.css" rel="stylesheet">
+		<link href="web/app.css" rel="stylesheet">
 	</head>
-	<body>
-		<script type="text/javascript" src="web/lib/zepto.js"></script>
-		<script>
-			$('documet').ready(function(){
-				console.log('dom is ready, and buggie is alive!!');
-			});			
+
+	<body style="padding-top: 60px;">
+		<script> 
+			Buggie = {};
+			Buggie.Tmpls = {};
 		</script>
+		<script type="text/javascript" src="web/lib/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="web/lib/bootstrap.js"></script>
+		<script type="text/javascript" src="web/lib/underscore-min.js"></script>
+		<script type="text/javascript" src="web/app.js"></script>
+		<script type="text/javascript" src="web/tmpl.js"></script>
 	</body>
 </html>
