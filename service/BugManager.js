@@ -1,26 +1,47 @@
 // The manager to get / create / modify / delete bugs
 var mysql      = require('mysql'),
-    connection = mysql.createConnection({
-                  host     : '127.0.0.1',
-                  port     : '3307',
-                  user     : 'root',
-                  password : 'admin888',
-                  database : 'buggie'
-                });
+	db_config  = {
+	    host     : '127.0.0.1',
+	    port     : '3307',
+	    user     : 'root',
+	    password : 'admin888',
+	    database : 'buggie'
+	},
+    connection = {};
 
-function getBugList(sucCallback, errCallback) {
+function getBugById(params) {
+	connection = mysql.createConnection(db_config);
 	connection.connect();
-	connection.query('SELECT * from bugss', function(err, rows, fields) {
+	connection.query('SELECT * from bugs where bid=?', params.id , function(err, rows) {
         if (err) {
             console.log(err);                
-            errCallback(err);
+            params.error && params.error('db error: '+err.code);
+        }
+        else if (rows.length<1) {
+        	params.error && params.error('no such item');
+        	connection.end();
         }
         else {                
-            sucCallback(rows);
+            params.success && params.success(rows);
+            connection.end();  
+        }               
+    });
+}
+function getBugList(params) {
+	connection = mysql.createConnection(db_config);
+	connection.connect();
+	connection.query('SELECT * from bugs', function(err, rows, fields) {
+        if (err) {
+            console.log(err);                
+            params.error && params.error('db error: '+err.code);
         }
-        connection.end();         
+        else {                
+            params.success && params.success(rows);
+            connection.end();  
+        }
     });
 }
 
+exports.getBugById = getBugById;
 exports.getBugList = getBugList;
 

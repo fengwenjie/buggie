@@ -6,7 +6,7 @@ var bugManager = require('./service/BugManager.js');
 
 app.use(connect.static(__dirname))
    .use(connectRoute(function (router) {
-    
+
     router.get('/', function (req, res, next) {
         res.statusCode = 302;
         res.setHeader('Location', 'index.html');
@@ -14,21 +14,32 @@ app.use(connect.static(__dirname))
     });
 
     router.get('/bug/item/:id', function (req, res, next) {
-        res.end('to return detail of No.'+req.params.id+' bug');
+
+        bugManager.getBugById({
+            // id param
+            id : req.params.id,
+            // suc callback
+            success : function(ret){
+                res.end( JSON.stringify( {retcode:1,ret:ret} ) );
+            },
+            // err callback
+            error : function(err){
+                res.end( JSON.stringify( {retcode:-1,ret:err} ) );
+            }
+        });
+        
     });
 
     router.get('/bug/list', function (req, res, next) {
 
-        bugManager.getBugList(
-            // suc callback
-            function(rows){
-                res.end( JSON.stringify( {retcode:1,ret:rows} ) );
+        bugManager.getBugList({
+            success : function(ret){
+                res.end( JSON.stringify( {retcode:1,ret:ret} ) );
             },
-            // err callback
-            function(err){
-                res.end( JSON.stringify( {retcode:-1,ret:'db errors'} ) );
+            error : function(err){
+                res.end( JSON.stringify( {retcode:-1,ret:err} ) );
             }
-        );
+        });
         
     });
 
